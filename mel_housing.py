@@ -45,7 +45,7 @@ y = df["Price"]
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.3, shuffle = True)
 
 # Select and algorithm and config hyperparameters
-model = ensemble.GradientBoostingRegressor(n_estimators = 150, learning_rate = 0.1, max_depth = 30, min_samples_split = 4, min_samples_leaf = 6, max_features = 6, loss = "huber")
+model = ensemble.GradientBoostingRegressor(n_estimators = 150, learning_rate = 0.1, max_depth = 30, min_samples_split = 4, min_samples_leaf = 6, max_features = 0.6, loss = "huber")
 """
  we have selected the gradient boosting
  - n_estimators = nr of decision trees
@@ -56,11 +56,17 @@ model = ensemble.GradientBoostingRegressor(n_estimators = 150, learning_rate = 0
  - max_features =
  - loss = how the model loss is calculated
 """
+print("Start training the model")
 # train the prediction model
 model.fit(X_train, y_train) 
+print("Model trained")
 
 # check the result
 # we use mean absolute error, passing the data we used to train.
 # model.predict runs the model
 mae_train = mean_absolute_error(y_train, model.predict(X_train))
-print("Teaining Set MAE: %.2f" %mae_train)
+print("Training Set MAE: %.2f" %mae_train)
+
+# let's check with the test data
+mae_test = mean_absolute_error(y_test, model.predict(X_test))
+print("Test Set MAE    : %.2f" %mae_test)
